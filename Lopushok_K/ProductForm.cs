@@ -10,6 +10,7 @@ using System.Windows.Forms;
 
 namespace Lopushok_K.model
 {
+
     public partial class ProductForm : Form
     {
         List<Product> list;
@@ -36,10 +37,11 @@ namespace Lopushok_K.model
             }
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void button2_Click ( object sender, EventArgs e )
         {
             if (current + 20 < list.Count)
             {
+                current += 20; // Перемещаемся вперед только если есть достаточно элементов
                 DisplayNextProducts();
             }
             else
@@ -101,10 +103,12 @@ namespace Lopushok_K.model
             }
         }
 
-        private void DisplayNextProducts()
+        private void DisplayNextProducts ()
         {
             flowLayoutPanel1.Controls.Clear();
-            for (int i = current; i < current + 20; i++)
+            // Ограничиваем количество элементов для отображения, чтобы избежать выхода за границы списка
+            int displayCount = Math.Min(20, list.Count - current); // Вычисляем, сколько элементов реально можно отобразить
+            for (int i = current; i < current + displayCount; i++)
             {
                 UserProduct up = new UserProduct
                 {
@@ -115,14 +119,26 @@ namespace Lopushok_K.model
                 up.AddPicture(list[i].Image);
                 flowLayoutPanel1.Controls.Add(up);
             }
-            current += 20;
+            current += displayCount; // Обновляем текущий индекс, добавляя количество фактически отображенных элементов
         }
 
-        private void buttonReset_Click(object sender, EventArgs e)
+
+        private void buttonReset_Click ( object sender, EventArgs e )
         {
             textBoxSearch.Text = ""; // Очищаем поле поиска
-            DisplayNextProducts(); // Отображаем все элементы из исходного списка
+            current = 0; // Сброс текущей позиции просмотра к началу списка
+
+            // Перезагрузка исходного списка продуктов из базы данных или кэша
+            using (ModelDB db = new ModelDB())
+            {
+                list = db.Product.ToList(); // Перезагрузка списка продуктов из базы данных
+                temp = list.Take(20).ToList(); // Обновление временного списка для отображения
+            }
+
+            // Отображаем первые 20 элементов из исходного списка
+            DisplayProducts(temp);
         }
+
         private void DisplayProducts(List<Product> products)
         {
             flowLayoutPanel1.Controls.Clear();
@@ -144,17 +160,25 @@ namespace Lopushok_K.model
             SortAndDisplayProducts();
             
         }
-        private void SortAndDisplayProducts()
+        private void SortAndDisplayProducts ()
         {
             List<Product> sortedList;
 
             if (comboBoxOrder.SelectedItem.ToString() == "Возрастание")
             {
-                sortedList = list.OrderBy(product => product.Min_agent_cost).ToList();
+                sortedList = list.OrderBy(product =>
+                {
+                    decimal.TryParse(product.Min_agent_cost, out decimal cost);
+                    return cost;
+                }).ToList();
             }
             else // "Уменьшение"
             {
-                sortedList = list.OrderByDescending(product => product.Min_agent_cost).ToList();
+                sortedList = list.OrderByDescending(product =>
+                {
+                    decimal.TryParse(product.Min_agent_cost, out decimal cost);
+                    return cost;
+                }).ToList();
             }
 
             DisplayProducts(sortedList);
@@ -163,8 +187,8 @@ namespace Lopushok_K.model
         private void ProductForm_Load(object sender, EventArgs e)
         {
             DisplayNextProducts();
-            comboBoxOrder.Items.Add("Возрастание");
             comboBoxOrder.Items.Add("Уменьшение");
+            comboBoxOrder.Items.Add("Возрастание");
             comboBoxOrder.SelectedIndex = 0;
         }
 
@@ -196,7 +220,37 @@ namespace Lopushok_K.model
 
         private void deletebtn_Click ( object sender, EventArgs e )
         {
+            List<UserProduct> selectedProducts = flowLayoutPanel1.Controls.OfType<UserProduct>()
+                .Where(up => up.BackColor == Color.LightBlue).ToList(); // Находим все выделенные продукты
 
+            using (var db = new ModelDB()) // Предположим, что ModelDB - ваш контекст базы данных
+            {
+                foreach (UserProduct selectedProduct in selectedProducts)
+                {
+                    var article = selectedProduct.Lab2; // Предполагаем, что Lab2 хранит артикул продукта
+                    var productToDelete = db.Product.FirstOrDefault(p => p.Article == article);
+                    if (productToDelete != null)
+                    {
+                        db.Product.Remove(productToDelete); // Удаляем продукт из базы данных
+                        flowLayoutPanel1.Controls.Remove(selectedProduct); // Удаляем из FlowLayoutPanel
+                        selectedProduct.Dispose();
+                    }
+                }
+                db.SaveChanges(); // Сохраняем изменения в базе данных
+            }
         }
+
+        private void comboBox1_SelectedIndexChanged ( object sender, EventArgs e )
+        {
+            // Получаем выбранный тип продукта из comboBox1
+            string selectedType = comboBox1.SelectedItem.ToString();
+
+            // Фильтруем список продуктов по выбранному типу
+            List<Product> filteredList = list.Where(product => product.Type_product == selectedType).ToList();
+
+            // Отображаем отфильтрованный список продуктов
+            DisplayProducts(filteredList);
+        }
+
     }
 }

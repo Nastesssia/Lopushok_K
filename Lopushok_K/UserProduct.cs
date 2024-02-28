@@ -16,6 +16,12 @@ namespace Lopushok_K
         public UserProduct ()
         {
             InitializeComponent();
+            this.Click += ( sender, e ) => ToggleSelect();
+            // Также добавьте обработчики для вложенных контролов, если они не должны "поглощать" клик
+            foreach (Control control in this.Controls)
+            {
+                control.Click += ( sender, e ) => ToggleSelect();
+            }
         }
         public string Lab1
         {
@@ -49,5 +55,11 @@ namespace Lopushok_K
                 }
             }
         }
+        public void ToggleSelect ()
+        {
+            this.BackColor = this.BackColor == Color.LightBlue ? Color.Transparent : Color.LightBlue;
+        }
+
+
     }
 }

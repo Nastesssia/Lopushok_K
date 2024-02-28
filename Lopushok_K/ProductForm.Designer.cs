@@ -34,10 +34,10 @@
             this.buttonReset = new System.Windows.Forms.Button();
             this.buttonAdd = new System.Windows.Forms.Button();
             this.comboBoxOrder = new System.Windows.Forms.ComboBox();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.textBoxSearch = new System.Windows.Forms.TextBox();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.deletebtn = new System.Windows.Forms.Button();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // button1
@@ -99,14 +99,6 @@
             this.comboBoxOrder.TabIndex = 7;
             this.comboBoxOrder.SelectedIndexChanged += new System.EventHandler(this.comboBoxOrder_SelectedIndexChanged);
             // 
-            // comboBox2
-            // 
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(432, 12);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(127, 21);
-            this.comboBox2.TabIndex = 8;
-            // 
             // textBoxSearch
             // 
             this.textBoxSearch.Location = new System.Drawing.Point(12, 13);
@@ -133,16 +125,31 @@
             this.deletebtn.UseVisualStyleBackColor = true;
             this.deletebtn.Click += new System.EventHandler(this.deletebtn_Click);
             // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            "Один слой",
+            "Два слоя",
+            "Три слоя",
+            "Детская",
+            "Супер мягкая"});
+            this.comboBox1.Location = new System.Drawing.Point(438, 12);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(121, 21);
+            this.comboBox1.TabIndex = 12;
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            // 
             // ProductForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(571, 498);
+            this.ClientSize = new System.Drawing.Size(604, 498);
+            this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.deletebtn);
             this.Controls.Add(this.buttonReset);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.textBoxSearch);
-            this.Controls.Add(this.comboBox2);
             this.Controls.Add(this.comboBoxOrder);
             this.Controls.Add(this.buttonAdd);
             this.Controls.Add(this.buttonSearch);
@@ -164,9 +171,9 @@
         private System.Windows.Forms.Button buttonReset;
         private System.Windows.Forms.Button buttonAdd;
         private System.Windows.Forms.ComboBox comboBoxOrder;
-        private System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.TextBox textBoxSearch;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.Button deletebtn;
+        private System.Windows.Forms.ComboBox comboBox1;
     }
 }
