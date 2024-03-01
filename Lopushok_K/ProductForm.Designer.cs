@@ -42,16 +42,21 @@
             this.button3 = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.buttonEdit = new System.Windows.Forms.Button();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.panel2 = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.panel1.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // button1
             // 
             this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(204)))), ((int)(((byte)(118)))));
             this.button1.Font = new System.Drawing.Font("Gabriola", 12F);
-            this.button1.Location = new System.Drawing.Point(430, 551);
+            this.button1.Location = new System.Drawing.Point(373, 551);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(87, 37);
+            this.button1.Size = new System.Drawing.Size(118, 37);
             this.button1.TabIndex = 0;
             this.button1.Text = "Предыдущая";
             this.button1.UseVisualStyleBackColor = false;
@@ -61,9 +66,9 @@
             // 
             this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(204)))), ((int)(((byte)(118)))));
             this.button2.Font = new System.Drawing.Font("Gabriola", 12F);
-            this.button2.Location = new System.Drawing.Point(523, 551);
+            this.button2.Location = new System.Drawing.Point(497, 551);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(92, 37);
+            this.button2.Size = new System.Drawing.Size(118, 37);
             this.button2.TabIndex = 1;
             this.button2.Text = "Следующая";
             this.button2.UseVisualStyleBackColor = false;
@@ -87,7 +92,7 @@
             this.buttonReset.Font = new System.Drawing.Font("Gabriola", 12F);
             this.buttonReset.Location = new System.Drawing.Point(35, 551);
             this.buttonReset.Name = "buttonReset";
-            this.buttonReset.Size = new System.Drawing.Size(59, 37);
+            this.buttonReset.Size = new System.Drawing.Size(127, 37);
             this.buttonReset.TabIndex = 3;
             this.buttonReset.Text = "Сброс";
             this.buttonReset.UseVisualStyleBackColor = false;
@@ -97,11 +102,11 @@
             // 
             this.buttonAdd.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(204)))), ((int)(((byte)(118)))));
             this.buttonAdd.Font = new System.Drawing.Font("Gabriola", 12F);
-            this.buttonAdd.Location = new System.Drawing.Point(186, 551);
+            this.buttonAdd.Location = new System.Drawing.Point(35, 606);
             this.buttonAdd.Name = "buttonAdd";
-            this.buttonAdd.Size = new System.Drawing.Size(75, 37);
+            this.buttonAdd.Size = new System.Drawing.Size(127, 37);
             this.buttonAdd.TabIndex = 4;
-            this.buttonAdd.Text = "Добавить";
+            this.buttonAdd.Text = "Добавить продукт";
             this.buttonAdd.UseVisualStyleBackColor = false;
             this.buttonAdd.Click += new System.EventHandler(this.buttonAdd_Click);
             // 
@@ -137,9 +142,9 @@
             // 
             this.deletebtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(204)))), ((int)(((byte)(118)))));
             this.deletebtn.Font = new System.Drawing.Font("Gabriola", 12F);
-            this.deletebtn.Location = new System.Drawing.Point(287, 551);
+            this.deletebtn.Location = new System.Drawing.Point(373, 606);
             this.deletebtn.Name = "deletebtn";
-            this.deletebtn.Size = new System.Drawing.Size(119, 37);
+            this.deletebtn.Size = new System.Drawing.Size(242, 37);
             this.deletebtn.TabIndex = 11;
             this.deletebtn.Text = "Удалить продукт";
             this.deletebtn.UseVisualStyleBackColor = false;
@@ -165,9 +170,9 @@
             // 
             this.button3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(204)))), ((int)(((byte)(118)))));
             this.button3.Font = new System.Drawing.Font("Gabriola", 12F);
-            this.button3.Location = new System.Drawing.Point(100, 551);
+            this.button3.Location = new System.Drawing.Point(168, 551);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(80, 37);
+            this.button3.Size = new System.Drawing.Size(127, 37);
             this.button3.TabIndex = 13;
             this.button3.Text = "Обновить";
             this.button3.UseVisualStyleBackColor = false;
@@ -178,9 +183,9 @@
             this.pictureBox1.BackgroundImage = global::Lopushok_K.Properties.Resources.Лопушок;
             this.pictureBox1.Image = global::Lopushok_K.Properties.Resources.Лопушок;
             this.pictureBox1.InitialImage = global::Lopushok_K.Properties.Resources.Лопушок;
-            this.pictureBox1.Location = new System.Drawing.Point(35, 12);
+            this.pictureBox1.Location = new System.Drawing.Point(29, 4);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(60, 60);
+            this.pictureBox1.Size = new System.Drawing.Size(65, 65);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 14;
             this.pictureBox1.TabStop = false;
@@ -189,22 +194,54 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Gabriola", 18F);
-            this.label1.Location = new System.Drawing.Point(101, 21);
+            this.label1.Font = new System.Drawing.Font("Gabriola", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label1.ForeColor = System.Drawing.Color.Teal;
+            this.label1.Location = new System.Drawing.Point(3, 7);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(89, 45);
+            this.label1.Size = new System.Drawing.Size(122, 59);
             this.label1.TabIndex = 15;
             this.label1.Text = "Лопушок";
             this.label1.Click += new System.EventHandler(this.label1_Click);
+            // 
+            // buttonEdit
+            // 
+            this.buttonEdit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(204)))), ((int)(((byte)(118)))));
+            this.buttonEdit.Font = new System.Drawing.Font("Gabriola", 12F);
+            this.buttonEdit.Location = new System.Drawing.Point(168, 606);
+            this.buttonEdit.Name = "buttonEdit";
+            this.buttonEdit.Size = new System.Drawing.Size(127, 37);
+            this.buttonEdit.TabIndex = 16;
+            this.buttonEdit.Text = "Редактировать";
+            this.buttonEdit.UseVisualStyleBackColor = false;
+            this.buttonEdit.Click += new System.EventHandler(this.buttonEdit_Click);
+            // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(206)))), ((int)(((byte)(255)))), ((int)(((byte)(249)))));
+            this.panel1.Controls.Add(this.label1);
+            this.panel1.Location = new System.Drawing.Point(86, 6);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(568, 73);
+            this.panel1.TabIndex = 17;
+            // 
+            // panel2
+            // 
+            this.panel2.BackColor = System.Drawing.Color.Teal;
+            this.panel2.Controls.Add(this.pictureBox1);
+            this.panel2.Location = new System.Drawing.Point(-14, 6);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(100, 73);
+            this.panel2.TabIndex = 18;
             // 
             // ProductForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(646, 602);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.pictureBox1);
+            this.ClientSize = new System.Drawing.Size(646, 655);
+            this.Controls.Add(this.panel2);
+            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.buttonEdit);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.deletebtn);
@@ -218,9 +255,12 @@
             this.Controls.Add(this.button1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ProductForm";
-            this.Text = "ProductForm";
+            this.Text = "Продукты";
             this.Load += new System.EventHandler(this.ProductForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
+            this.panel2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -241,5 +281,8 @@
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button buttonEdit;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel panel2;
     }
 }

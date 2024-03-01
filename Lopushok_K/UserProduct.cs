@@ -11,8 +11,10 @@ using System.Windows.Forms;
 
 namespace Lopushok_K
 {
+
     public partial class UserProduct : UserControl
     {
+        public bool IsSelected { get; private set; }
         public UserProduct ()
         {
             InitializeComponent();
@@ -57,9 +59,24 @@ namespace Lopushok_K
         }
         public void ToggleSelect ()
         {
-            this.BackColor = this.BackColor == Color.LightBlue ? Color.Transparent : Color.LightBlue;
+            IsSelected = !IsSelected;
+
+            // Снимаем выделение со всех продуктов, кроме текущего
+            foreach (Control control in Parent.Controls)
+            {
+                if (control != this && control is UserProduct otherProduct)
+                {
+                    otherProduct.IsSelected = false;
+                    otherProduct.BackColor = Color.Transparent;
+                }
+            }
+
+            // Устанавливаем цвет фона в зависимости от выбранного состояния
+            this.BackColor = IsSelected ? Color.LightBlue : Color.Transparent;
         }
+        private void pictureBox1_Click ( object sender, EventArgs e )
+        {
 
-
+        }
     }
 }

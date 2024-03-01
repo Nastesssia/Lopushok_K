@@ -164,5 +164,10 @@ namespace Lopushok_K
         {
 
         }
+
+        private void label1_Click ( object sender, EventArgs e )
+        {
+
+        }
     }
 }

@@ -283,5 +283,68 @@ namespace Lopushok_K.model
         {
 
         }
+
+        private void buttonEdit_Click ( object sender, EventArgs e )
+        {
+            // Получаем выбранный продукт для редактирования
+            UserProduct selectedProduct = flowLayoutPanel1.Controls.OfType<UserProduct>()
+                .FirstOrDefault(up => up.BackColor == Color.LightBlue);
+
+            if (selectedProduct == null)
+            {
+                MessageBox.Show("Выберите продукт для редактирования.", "Предупреждение", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Получаем артикул выбранного продукта
+            string article = selectedProduct.Lab2;
+
+            // Открываем форму редактирования с выбранным продуктом
+            using (EditProductForm editProductForm = new EditProductForm(article))
+            {
+                if (editProductForm.ShowDialog() != DialogResult.OK)
+                    return;
+
+                // Получаем измененный продукт
+                Product updatedProduct = editProductForm.GetUpdatedProduct();
+
+                try
+                {
+                    // Обновляем продукт в базе данных
+                    using (ModelDB db = new ModelDB())
+                    {
+                        Product existingProduct = db.Product.FirstOrDefault(p => p.Article == article);
+                        if (existingProduct != null)
+                        {
+                            existingProduct.Product_name = updatedProduct.Product_name;
+                            existingProduct.Type_product = updatedProduct.Type_product;
+                            existingProduct.Article = updatedProduct.Article;
+                            existingProduct.Min_agent_cost = updatedProduct.Min_agent_cost;
+
+                            // Если у вас есть изображение, то также обновите его
+                            existingProduct.Image = updatedProduct.Image;
+
+                            db.SaveChanges();
+                        }
+                    }
+
+                    // Обновляем отображение продуктов
+                    list = new List<Product>();
+                    using (ModelDB db = new ModelDB())
+                    {
+                        list = db.Product.ToList();
+                    }
+                    DisplayProducts(list);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ошибка: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                finally
+                {
+                    editProductForm.Close();
+                }
+            }
+        }
     }
 }
