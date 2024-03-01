@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.Entity.Infrastructure;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -15,33 +16,24 @@ namespace Lopushok_K.model
     {
         List<Product> list;
         List<Product> temp;
-        private int current = 20;
-        public ProductForm()
+        private int itemsPerPage = 20;
+        private int currentPage = 1;
+        public ProductForm ()
         {
             InitializeComponent();
             using (ModelDB db = new ModelDB())
             {
                 list = db.Product.ToList();
-                temp = list.Take(current).ToList();
-                foreach (var l in temp)
-                {
-                    UserProduct up = new UserProduct
-                    {
-                        Lab1 = l.Product_name + " | " + l.Type_product,
-                        Lab2 = l.Article,
-                        Lab4 = l.Min_agent_cost
-                    };
-                    up.AddPicture(l.Image);
-                    flowLayoutPanel1.Controls.Add(up);
-                }
+                DisplayNextProducts();
             }
         }
 
         private void button2_Click ( object sender, EventArgs e )
         {
-            if (current + 20 < list.Count)
+            int totalPages = (int)Math.Ceiling((double)list.Count / itemsPerPage);
+            if (currentPage < totalPages)
             {
-                current += 20; // Перемещаемся вперед только если есть достаточно элементов
+                currentPage++;
                 DisplayNextProducts();
             }
             else
@@ -50,23 +42,12 @@ namespace Lopushok_K.model
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void button1_Click ( object sender, EventArgs e )
         {
-            if (current >= 20)
+            if (currentPage > 1)
             {
-                current -= 20;
-                flowLayoutPanel1.Controls.Clear();
-                for (int i = current; i < current + 20; i++)
-                {
-                    UserProduct up = new UserProduct
-                    {
-                        Lab1 = list[i].Product_name + " | " + list[i].Type_product,
-                        Lab2 = list[i].Article,
-                        Lab4 = list[i].Min_agent_cost,
-                    };
-                    up.AddPicture(list[i].Image);
-                    flowLayoutPanel1.Controls.Add(up);
-                }
+                currentPage--;
+                DisplayNextProducts();
             }
             else
             {
@@ -74,7 +55,7 @@ namespace Lopushok_K.model
             }
         }
 
-        private void buttonSearch_Click(object sender, EventArgs e)
+        private void buttonSearch_Click ( object sender, EventArgs e )
         {
             string searchTerm = textBoxSearch.Text.ToLower(); // Получаем текст поиска и приводим его к нижнему регистру
 
@@ -87,46 +68,43 @@ namespace Lopushok_K.model
 
             DisplaySearchResults(searchResults);
         }
-        private void DisplaySearchResults(List<Product> results)
+        private void DisplaySearchResults ( List<Product> results )
         {
-            flowLayoutPanel1.Controls.Clear();
-            foreach (Product product in results)
+            if (results.Any())
             {
-                UserProduct up = new UserProduct
+                flowLayoutPanel1.Controls.Clear();
+                foreach (Product product in results)
                 {
-                    Lab1 = product.Product_name + " | " + product.Type_product,
-                    Lab2 = product.Article,
-                    Lab4 = product.Min_agent_cost,
-                };
-                up.AddPicture(product.Image);
-                flowLayoutPanel1.Controls.Add(up);
+                    UserProduct up = new UserProduct
+                    {
+                        Lab1 = product.Product_name + " | " + product.Type_product,
+                        Lab2 = product.Article,
+                        Lab4 = product.Min_agent_cost,
+                    };
+                    up.AddPicture(product.Image);
+                    flowLayoutPanel1.Controls.Add(up);
+                }
             }
-        }
+            else
+            {
+                MessageBox.Show("Поиск не дал результатов.", "Предупреждение", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        
+    }
 
-        private void DisplayNextProducts ()
+    private void DisplayNextProducts ()
         {
-            flowLayoutPanel1.Controls.Clear();
-            // Ограничиваем количество элементов для отображения, чтобы избежать выхода за границы списка
-            int displayCount = Math.Min(20, list.Count - current); // Вычисляем, сколько элементов реально можно отобразить
-            for (int i = current; i < current + displayCount; i++)
-            {
-                UserProduct up = new UserProduct
-                {
-                    Lab1 = list[i].Product_name + " | " + list[i].Type_product,
-                    Lab2 = list[i].Article,
-                    Lab4 = list[i].Min_agent_cost,
-                };
-                up.AddPicture(list[i].Image);
-                flowLayoutPanel1.Controls.Add(up);
-            }
-            current += displayCount; // Обновляем текущий индекс, добавляя количество фактически отображенных элементов
+            int startIndex = ( currentPage - 1 ) * itemsPerPage;
+            int endIndex = Math.Min(startIndex + itemsPerPage, list.Count);
+
+            DisplayProducts(list.Skip(startIndex).Take(itemsPerPage).ToList());
         }
 
 
         private void buttonReset_Click ( object sender, EventArgs e )
         {
             textBoxSearch.Text = ""; // Очищаем поле поиска
-            current = 0; // Сброс текущей позиции просмотра к началу списка
+            currentPage = 0; // Сброс текущей позиции просмотра к началу списка
 
             // Перезагрузка исходного списка продуктов из базы данных или кэша
             using (ModelDB db = new ModelDB())
@@ -139,7 +117,7 @@ namespace Lopushok_K.model
             DisplayProducts(temp);
         }
 
-        private void DisplayProducts(List<Product> products)
+        private void DisplayProducts ( List<Product> products )
         {
             flowLayoutPanel1.Controls.Clear();
             foreach (Product product in products)
@@ -155,13 +133,15 @@ namespace Lopushok_K.model
             }
         }
 
-        private void comboBoxOrder_SelectedIndexChanged(object sender, EventArgs e)
+        private void comboBoxOrder_SelectedIndexChanged ( object sender, EventArgs e )
         {
             SortAndDisplayProducts();
-            
+
         }
         private void SortAndDisplayProducts ()
         {
+            int currentPage = this.currentPage;
+
             List<Product> sortedList;
 
             if (comboBoxOrder.SelectedItem.ToString() == "Возрастание")
@@ -181,42 +161,50 @@ namespace Lopushok_K.model
                 }).ToList();
             }
 
-            DisplayProducts(sortedList);
+            DisplayProducts(sortedList.Skip(( currentPage - 1 ) * itemsPerPage).Take(itemsPerPage).ToList());
         }
 
-        private void ProductForm_Load(object sender, EventArgs e)
+        private void ProductForm_Load ( object sender, EventArgs e )
         {
             DisplayNextProducts();
             comboBoxOrder.Items.Add("Уменьшение");
             comboBoxOrder.Items.Add("Возрастание");
             comboBoxOrder.SelectedIndex = 0;
         }
-
         private void buttonAdd_Click ( object sender, EventArgs e )
         {
             using (AddProductForm addProductForm = new AddProductForm())
             {
-                if (addProductForm.ShowDialog() == DialogResult.OK)
+                if (addProductForm.ShowDialog() != DialogResult.OK)
+                    return;
+
+                Product newProduct = addProductForm.GetNewProduct();
+
+                try
                 {
-                    // Получаем новый продукт из формы добавления продукта
-                    Product newProduct = addProductForm.GetNewProduct();
+                    using (ModelDB db = new ModelDB())
+                    {
+                        if (db.Product.Any(p => p.Product_name == newProduct.Product_name))
+                            return;
 
-                    // Добавляем новый продукт к исходному списку
-                    list.Add(newProduct);
+                        db.Product.Add(newProduct);
+                        db.SaveChanges();
 
-                    // Отображаем обновленный список продуктов
-                    SortAndDisplayProducts();
-
-                    // Закрываем форму добавления продукта
+                        list = db.Product.ToList();
+                        DisplayProducts(list); // Обновляем отображение продуктов
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ошибка: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                finally
+                {
                     addProductForm.Close();
                 }
             }
         }
 
-        private void flowLayoutPanel1_Paint ( object sender, PaintEventArgs e )
-        {
-
-        }
 
         private void deletebtn_Click ( object sender, EventArgs e )
         {
@@ -252,5 +240,48 @@ namespace Lopushok_K.model
             DisplayProducts(filteredList);
         }
 
+        private void flowLayoutPanel1_Paint ( object sender, PaintEventArgs e )
+        {
+
+        }
+
+        private void button3_Click ( object sender, EventArgs e )
+        {
+            textBoxSearch.Text = ""; // Очищаем поле поиска
+            currentPage = 0; // Сброс текущей позиции просмотра к началу списка
+
+            // Перезагрузка исходного списка продуктов из базы данных или кэша
+            using (ModelDB db = new ModelDB())
+            {
+                list = db.Product.ToList(); // Перезагрузка списка продуктов из базы данных
+                temp = list.Take(20).ToList(); // Обновление временного списка для отображения
+            }
+
+            // Отображаем первые 20 элементов из исходного списка
+            DisplayProducts(temp);
+        }
+
+        private void textBoxSearch_TextChanged ( object sender, EventArgs e )
+        {
+            string searchTerm = textBoxSearch.Text.ToLower(); // Получаем текст поиска и приводим его к нижнему регистру
+
+            List<Product> searchResults = list.Where(product =>
+                product.Product_name.ToLower().Contains(searchTerm) ||
+                product.Type_product.ToLower().Contains(searchTerm) ||
+                product.Article.ToLower().Contains(searchTerm) ||
+                product.Min_agent_cost.ToString().Contains(searchTerm)
+            ).ToList();
+            DisplaySearchResults(searchResults);
+        }
+
+        private void label1_Click ( object sender, EventArgs e )
+        {
+
+        }
+
+        private void pictureBox1_Click ( object sender, EventArgs e )
+        {
+
+        }
     }
 }

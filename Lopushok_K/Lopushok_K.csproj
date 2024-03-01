@@ -150,6 +150,8 @@
     <Content Include="products\paper_7.jpeg" />
     <Content Include="products\paper_8.jpeg" />
     <Content Include="products\paper_9.jpeg" />
+    <Content Include="Resources\Лопушок.png" />
+    <None Include="Resources\Лопушок1.png" />
     <None Include="Resources\picture.png" />
   </ItemGroup>
   <ItemGroup>

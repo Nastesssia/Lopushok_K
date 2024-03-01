@@ -144,5 +144,25 @@ namespace Lopushok_K
         {
 
         }
+
+        private void tbArticle_TextChanged ( object sender, EventArgs e )
+        {
+
+        }
+
+        private void AddProductForm_Load ( object sender, EventArgs e )
+        {
+
+        }
+
+        private void tbMinCost_TextChanged ( object sender, EventArgs e )
+        {
+
+        }
+
+        private void tbProductName_TextChanged ( object sender, EventArgs e )
+        {
+
+        }
     }
 }
