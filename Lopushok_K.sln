@@ -5,6 +5,10 @@ VisualStudioVersion = 17.8.34525.116
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lopushok_K", "Lopushok_K\Lopushok_K.csproj", "{F4C108A2-4912-4455-BE9A-BBD269C6DB6E}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "InstallLopushok2.0", "InstallLopushok2.0\InstallLopushok2.0.vdproj", "{94ABB587-C286-45ED-AF59-B40CFD01AC56}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject1", "TestProject1\TestProject1.csproj", "{7ABE95F6-422C-4324-96E7-A6767BE9F457}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,12 @@ Global
 		{F4C108A2-4912-4455-BE9A-BBD269C6DB6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F4C108A2-4912-4455-BE9A-BBD269C6DB6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F4C108A2-4912-4455-BE9A-BBD269C6DB6E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94ABB587-C286-45ED-AF59-B40CFD01AC56}.Debug|Any CPU.ActiveCfg = Debug
+		{94ABB587-C286-45ED-AF59-B40CFD01AC56}.Release|Any CPU.ActiveCfg = Release
+		{7ABE95F6-422C-4324-96E7-A6767BE9F457}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7ABE95F6-422C-4324-96E7-A6767BE9F457}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7ABE95F6-422C-4324-96E7-A6767BE9F457}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7ABE95F6-422C-4324-96E7-A6767BE9F457}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

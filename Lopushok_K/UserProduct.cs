@@ -45,7 +45,7 @@ namespace Lopushok_K
         {
             if (!string.IsNullOrEmpty(path))
             {
-                string absolutePath = Path.Combine(Environment.CurrentDirectory, path.TrimStart('\\'));
+                string absolutePath = Path.Combine(Environment.CurrentDirectory, path);
 
                 if (File.Exists(absolutePath))
                 {
@@ -57,6 +57,8 @@ namespace Lopushok_K
                 }
             }
         }
+
+
         public void ToggleSelect ()
         {
             IsSelected = !IsSelected;

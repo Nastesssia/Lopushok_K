@@ -104,7 +104,12 @@ namespace Lopushok_K
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "Изображения (*.jpg; *.jpeg; *.png; *.gif)|*.jpg; *.jpeg; *.png; *.gif|Все файлы (*.*)|*.*";
-            openFileDialog.InitialDirectory = @"C:\Users\User12\Desktop\WPF\Lopushok_K\Lopushok_K\products";
+
+            // Создаем относительный путь к папке "products" от текущей директории приложения
+            string relativePath = Path.Combine("products");
+
+            // Используем относительный путь в качестве начальной директории
+            openFileDialog.InitialDirectory = Path.Combine(Environment.CurrentDirectory, relativePath);
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {

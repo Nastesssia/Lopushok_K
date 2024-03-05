@@ -18,11 +18,13 @@ namespace Lopushok_K.model
         List<Product> temp;
         private int itemsPerPage = 20;
         private int currentPage = 1;
+
         public ProductForm ()
         {
             InitializeComponent();
             using (ModelDB db = new ModelDB())
             {
+
                 list = db.Product.ToList();
                 DisplayNextProducts();
             }
@@ -68,7 +70,7 @@ namespace Lopushok_K.model
 
             DisplaySearchResults(searchResults);
         }
-        private void DisplaySearchResults ( List<Product> results )
+        public void DisplaySearchResults ( List<Product> results )
         {
             if (results.Any())
             {

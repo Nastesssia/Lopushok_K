@@ -199,7 +199,7 @@
             this.pictureBoxProduct.Location = new System.Drawing.Point(30, 115);
             this.pictureBoxProduct.Name = "pictureBoxProduct";
             this.pictureBoxProduct.Size = new System.Drawing.Size(170, 170);
-            this.pictureBoxProduct.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBoxProduct.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBoxProduct.TabIndex = 16;
             this.pictureBoxProduct.TabStop = false;
             this.pictureBoxProduct.Click += new System.EventHandler(this.pictureBoxProduct_Click);

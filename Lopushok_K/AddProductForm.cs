@@ -102,21 +102,30 @@ namespace Lopushok_K
         {
      
         }
-
         private void pictureBox1_Click ( object sender, EventArgs e )
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "Изображения (*.jpg; *.jpeg; *.png; *.gif)|*.jpg; *.jpeg; *.png; *.gif|Все файлы (*.*)|*.*";
-            openFileDialog.InitialDirectory = @"C:\Users\User12\Desktop\WPF\Lopushok_K\Lopushok_K\products";
+
+            // Создаем относительный путь к папке "products" от текущей директории приложения
+            string relativePath = Path.Combine("products");
+
+            // Используем относительный путь в качестве начальной директории
+            string newPath = Path.Combine(Environment.CurrentDirectory, relativePath);
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                selectedImagePath = openFileDialog.FileName;
-
+                string selectedImagePath = openFileDialog.FileName;
+                this.selectedImagePath = "products\\" + openFileDialog.SafeFileName;
                 // Загрузите изображение в pictureBox1
                 try
                 {
                     pictureBox1.Image = Image.FromFile(selectedImagePath);
+                    FileInfo fileInf = new FileInfo(selectedImagePath);
+                    if (fileInf.Exists)
+                    {
+                        fileInf.CopyTo(newPath+"\\"+ openFileDialog.SafeFileName, true);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -124,6 +133,8 @@ namespace Lopushok_K
                 }
             }
         }
+
+
 
         private void Equal_TextChanged ( object sender, EventArgs e )
         {
